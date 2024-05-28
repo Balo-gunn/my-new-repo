@@ -1,0 +1,31 @@
+name: Node.js CI  # Name of the workflow
+
+on:  # Triggers
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest  # Runner environment
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]  # Test against multiple Node.js versions
+
+    steps:
+    - name: Checkout repository  # Step to checkout the code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js  # Step to setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies  # Step to install dependencies
+      run: npm install
+
+    - name: Run tests  # Step to run tests
+      run: npm test
